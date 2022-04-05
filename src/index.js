@@ -10,26 +10,38 @@ const createArticles = (articles) => {
     articleDOM.innerHTML = `
       <img src="${article.img}" alt="Profile">
       <h2 class="article-title">${article.title}</h2>
-      <p class="article-author">${article.author} - ${new Date(article.createdAt).toLocaleDateString('fr-FR', {
-        weekday: 'long',
-        day: '2-digit',
-        year: 'numeric',
-        month: 'long'
-      })}</p>
+      <p class="article-author">${article.author} - ${new Date(
+      article.createdAt
+    ).toLocaleDateString('fr-FR', {
+      weekday: 'long',
+      day: '2-digit',
+      year: 'numeric',
+      month: 'long',
+    })}</p>
       <p class="article-content">${article.content}</p>
       <div class="article-actions">
         <button class="btn btn-danger" data-id=${article._id}>Supprimer</button>
-        <button class="btn btn-primary">Modifier</button>
+        <button class="btn btn-primary" data-id=${article._id}>Modifier</button>
       </div>
     `;
     return articleDOM;
   });
 
-  articlesContainerElement.innerHTML = ''
+  articlesContainerElement.innerHTML = '';
   articlesContainerElement.append(...articlesDOM);
   const deleteButtons =
     articlesContainerElement.querySelectorAll('.btn-danger');
+  const editButtons =
+    articlesContainerElement.querySelectorAll('.btn-primary');
 
+  editButtons.forEach(button => {
+    button.addEventListener('click', e => {
+      const target = e.target;
+      const articleId = target.dataset.id;
+      location.assign('/form.html?id=' + articleId)
+    })
+  })
+  
   deleteButtons.forEach((button) => {
     button.addEventListener('click', async (e) => {
       const target = e.target;
@@ -42,8 +54,8 @@ const createArticles = (articles) => {
             method: 'DELETE',
           }
         );
-        const body = await response.json()
-        await fetchArticles()
+        const body = await response.json();
+        await fetchArticles();
         console.log(body);
       } catch (error) {
         console.error(error);

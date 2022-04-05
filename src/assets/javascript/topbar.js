@@ -1,6 +1,5 @@
 const iconMobile = document.querySelector('.header-menu-icon');
 const headerMenu = document.querySelector('.header-menu')
-console.log(headerMenu);
 let isMenuOpen = false;
 let mobileMenuDOM;
 
