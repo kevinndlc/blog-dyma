@@ -38,3 +38,29 @@
     color: var(--error);
   }
 }
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: hsl(0 0% 0% / 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .modal {
+    background-color: white;
+    min-width: 30rem;
+    border-radius: 0.3rem;
+    padding: 5rem;
+    box-shadow: var(--box-shadow);
+    text-align: center;
+
+    p {
+      margin-bottom: 3rem;
+    }
+
+    .btn {
+      margin-left: 0.5rem;
+    }
+  }
+}
