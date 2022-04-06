@@ -3,8 +3,15 @@ import './index.scss';
 
 const articlesContainerElement = document.querySelector('.articles-container');
 const categoriesContainerElement = document.querySelector('.categories');
+const selectElement = document.querySelector('select');
 let filter;
 let articles;
+let sortBy = 'desc';
+
+selectElement.addEventListener('change', (e) => {
+  sortBy = e.target.value
+  fetchArticles()
+})
 
 const createArticles = () => {
   const articlesDOM = articles
@@ -77,7 +84,10 @@ const createArticles = () => {
 const displayMenuCategories = (categoriesArr) => {
   const liElements = categoriesArr.map((categoryElem) => {
     const li = document.createElement('li');
-    li.innerHTML = `<li>${categoryElem[0]} (<strong>${categoryElem[1]}</strong>)</li>`;
+    li.innerHTML = `${categoryElem[0]} (<strong>${categoryElem[1]}</strong>)`;
+    if (categoryElem[0] === filter) {
+      li.classList.add('active')
+    }
     li.addEventListener('click', () => {
       if (filter === categoryElem[0]) {
         filter = null;
@@ -106,16 +116,18 @@ const createMenuCategories = () => {
     return acc;
   }, {});
 
-  const categoriesArr = Object.keys(categories).map((category) => {
-    return [category, categories[category]];
-  }).sort((c1, c2) => c1[0].localeCompare(c2[0]));
+  const categoriesArr = Object.keys(categories)
+    .map((category) => {
+      return [category, categories[category]];
+    })
+    .sort((c1, c2) => c1[0].localeCompare(c2[0]));
 
   displayMenuCategories(categoriesArr);
 };
 
 const fetchArticles = async () => {
   try {
-    const response = await fetch('https://restapi.fr/api/article');
+    const response = await fetch(`https://restapi.fr/api/article?sort=createdAt:${sortBy}`);
     articles = await response.json();
     createArticles();
     createMenuCategories();
