@@ -32,7 +32,7 @@ export function openModal(question) {
   createModal(question);
   backdrop.append(modal);
   body.append(backdrop);
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     backdrop.addEventListener('click', () => {
       resolve(false)
       backdrop.remove();
