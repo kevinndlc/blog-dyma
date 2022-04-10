@@ -52,11 +52,6 @@ form.addEventListener('submit', async (e) => {
   const formData = new FormData(form);
   const entries = formData.entries();
 
-  // const article = Array.from(entries).reduce((acc, current) => {
-  //   acc[current[0]] = current[1]
-  //   return acc;
-  // }, {});
-
   const article = Object.fromEntries(entries); // Façon optimisée
 
   if (formIsValid(article)) {
